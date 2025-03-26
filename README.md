@@ -1,10 +1,10 @@
 # Responses API on Azure OpenAI
 A selection of basic Responses API on Azure OpenAI samples, which cover:
 
-- Simple request/response
-- Conversation (referencing the previous message ID)
-- Function calling
-- Vision
+- [Simple request/response](responses-basic-aoai.py)
+- [Conversation (referencing the previous message ID)](responses-conversation-aoai.py)
+- [Function calling](responses-function-weather-aoai.py)
+- [Vision](responses-image-aoai.py)
 
 To be added:
 
