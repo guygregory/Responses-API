@@ -12,7 +12,7 @@ To be added:
 - Streaming responses
 - Entra ID auth examples
 
-These examples are loosely based on the [samples from the Microsoft Learn Documentation](https://learn.microsoft.com/en-gb/azure/ai-services/openai/how-to/responses), and also the [documentation from OpenAI](https://platform.openai.com/docs/api-reference/responses/create).
+These examples are loosely based on the [samples from the Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses), and also the [documentation from OpenAI](https://platform.openai.com/docs/api-reference/responses/create).
 
 I've personally tested these using:
 
