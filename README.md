@@ -1,7 +1,7 @@
 # Responses API on Azure OpenAI
 A selection of basic Responses API on Azure OpenAI samples, which cover:
 
-- Simple response
+- Simple request/response
 - Conversation (referencing the previous message ID)
 - Function calling
 - Vision
