@@ -21,12 +21,12 @@ while True:
         response = client.responses.create(
             model=os.environ["AZURE_OPENAI_API_MODEL"],
             previous_response_id=previous_response_id,
-            input=[{"role": "user", "content": user_input}],
+            input=[{"role": "user", "content": user_input}]
         )
     else:
         response = client.responses.create(
             model=os.environ["AZURE_OPENAI_API_MODEL"],
-            input=[{"role": "user", "content": user_input}],
+            input=[{"role": "user", "content": user_input}]
         )
 
     print(response.output_text)
