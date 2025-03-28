@@ -26,7 +26,7 @@ file_batch = client.vector_stores.file_batches.upload_and_poll(
 )
 
 # Optional - print the upload status, file counts, and vector store ID
-# # print(file_batch.status)
+# print(file_batch.status)
 # print(file_batch.file_counts)
 # print("Vector Store ID:",vector_store.id)
 
