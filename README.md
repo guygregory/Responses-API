@@ -16,6 +16,7 @@ To be added:
 - Structured Outputs
 - Entra ID auth examples
 - Web Search
+- Image from URL
 
 These examples are loosely based on the [samples from the Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses), and also the [documentation from OpenAI](https://platform.openai.com/docs/api-reference/responses/create).
 
