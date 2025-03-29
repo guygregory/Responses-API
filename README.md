@@ -1,8 +1,10 @@
 # Responses API on Azure OpenAI
 A selection of basic Responses API on Azure OpenAI samples, which cover:
 
+- [Gradio-based chatbot with conversation history and streaming (see screenshot below)](responses-conversation-stream-gradio.py)
 - [Simple request/response](responses-basic-aoai.py)
-- [Conversation (referencing the previous message ID)](responses-conversation-aoai.py)
+- [Simple conversation (referencing the previous message ID)](responses-conversation-aoai.py)
+- [Streaming using SSE](responses-stream-sse-aoai.py) and [Streaming using Async](responses-stream-async-aoai.py)
 - [Function calling](responses-function-weather-aoai.py)
 - [Vision](responses-image-aoai.py)
 - [File Search](responses-filesearch-aoai.py)
