@@ -1,4 +1,4 @@
-# Uses Server Side Events (SSE) to continuously stream data from the server to the client.
+# Uses async client to continuously stream data from the server to the client.
 from openai import AsyncAzureOpenAI
 from dotenv import load_dotenv
 import os
