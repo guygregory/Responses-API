@@ -12,7 +12,7 @@ client = AzureOpenAI(
 
 response = client.responses.create(
     model=os.environ["AZURE_OPENAI_API_MODEL"],
-    input="This is a test."
+    input="Tell me a joke."
     #truncation="auto" required when using computer-use-preview model.
 
 )
