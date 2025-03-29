@@ -16,7 +16,6 @@ A selection of basic Responses API on Azure OpenAI samples, which cover:
 To be added:
 
 - Structured Outputs
-- Streaming responses
 - Entra ID auth examples
 - Web Search
 
