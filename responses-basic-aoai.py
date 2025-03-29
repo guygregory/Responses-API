@@ -11,7 +11,7 @@ client = AzureOpenAI(
     )
 
 response = client.responses.create(
-    model=os.environ["AZURE_OPENAI_API_MODEL"], # replace with your model deployment name 
+    model=os.environ["AZURE_OPENAI_API_MODEL"],
     input="This is a test."
     #truncation="auto" required when using computer-use-preview model.
 
