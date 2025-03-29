@@ -7,6 +7,10 @@ A selection of basic Responses API on Azure OpenAI samples, which cover:
 - [Vision](responses-image-aoai.py)
 - [File Search](responses-filesearch-aoai.py)
 
+![image](https://github.com/user-attachments/assets/1240305f-5261-427e-8c5a-80286b23ef01)
+
+
+
 To be added:
 
 - Structured Outputs
@@ -23,3 +27,4 @@ I've personally tested these using:
 - Global Standard and Standard
 - API version 2025-03-01-preview
 - OpenAI library 1.68.2
+
