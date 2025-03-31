@@ -6,10 +6,9 @@ A selection of simple Responses API samples, which cover:
 - [Simple conversation (referencing the previous message ID)](responses-conversation-aoai.py)
 - [Streaming using SSE](responses-stream-sse-aoai.py) and [Streaming using Async](responses-stream-async-aoai.py)
 - [Function calling](responses-function-weather-aoai.py)
-- [Vision - Image from a local file](responses-image-aoai.py)
-- [Vision - Image from a URL](responses-imageurl-aoai.py)
 - [File Search](responses-filesearch-aoai.py)
 - [Structured Outputs](responses-structured-aoai.py)
+- Vision: [Image from a local file](responses-image-aoai.py) and [Image from a URL](responses-imageurl-aoai.py)
 
 [![image](https://github.com/user-attachments/assets/1240305f-5261-427e-8c5a-80286b23ef01)](responses-conversation-stream-gradio.py)
 
