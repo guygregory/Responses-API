@@ -8,12 +8,12 @@ A selection of simple Responses API samples, which cover:
 - [Function calling](responses-function-weather-aoai.py)
 - [Vision](responses-image-aoai.py)
 - [File Search](responses-filesearch-aoai.py)
+- [Structured Outputs](responses-structured-aoai.py)
 
 [![image](https://github.com/user-attachments/assets/1240305f-5261-427e-8c5a-80286b23ef01)](responses-conversation-stream-gradio.py)
 
 To be added:
 
-- Structured Outputs
 - Entra ID auth examples
 - Web Search
 - Image from URL
