@@ -8,7 +8,7 @@ import base64
 load_dotenv()
 
 # Set the AI host to Azure, OpenAI, or GitHub Models (coming soon)
-AIhost = "OpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
+AIhost = "AzureOpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
 
 def get_client(host: str):
     """
