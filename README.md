@@ -1,4 +1,4 @@
-# Responses API on Azure OpenAI
+# Responses API samples
 A selection of simple Responses API samples, which cover:
 
 - [Gradio-based chatbot with conversation history, image upload, and streaming (see screenshot below)](responses-conversation-stream-gradio-aoai.py)
