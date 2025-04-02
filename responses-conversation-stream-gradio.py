@@ -8,31 +8,34 @@ import base64
 load_dotenv()
 
 # Set the AI host to Azure, OpenAI, or GitHub Models (coming soon)
-AIhost = "AzureOpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
+AIhost = "OpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
 
-if AIhost == "AzureOpenAI":
-    # Initialize the Azure OpenAI client using environment variables
-    deployment = os.environ["AZURE_OPENAI_API_MODEL"]    
-    client = AzureOpenAI(
-        api_key=os.environ["AZURE_OPENAI_API_KEY"],
-        api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-        azure_endpoint=os.environ["AZURE_OPENAI_API_ENDPOINT"]
-    )
+def get_client(host: str):
+    """
+    Returns the deployment and client based on the specified host.
+    Exits the application if an unsupported host is provided.
+    """
+    if host == "AzureOpenAI":
+        deployment = os.environ["AZURE_OPENAI_API_MODEL"]
+        client = AzureOpenAI(
+            api_key=os.environ["AZURE_OPENAI_API_KEY"],
+            api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+            azure_endpoint=os.environ["AZURE_OPENAI_API_ENDPOINT"]
+        )
+    elif host == "OpenAI":
+        deployment = "gpt-4o-mini"
+        client = OpenAI()
+    elif host == "GitHub":
+        deployment = "gpt-4o-mini"
+        print("GitHub Models are not yet supported in this demo. Please check back later.")
+        exit(0)
+    else:
+        print("Invalid AI host specified. Please set AIhost to 'AzureOpenAI', 'OpenAI', or 'GitHub', and provide the configuration in the .env file")
+        exit(0)
+    return deployment, client
 
-elif AIhost == "OpenAI":
-    # Initialize the OpenAI client using environment variables
-    deployment = "gpt-4o-mini"
-    client = OpenAI()
-
-elif AIhost == "GitHub":
-    # To be implemented, once GitHub Models update their API to support Responses API
-    deployment = "gpt-4o-mini"
-    print("GitHub Models are not yet supported in this demo. Please check back later.")
-    exit(0)
-
-else:
-    print("Invalid AI host specified. Please set AIhost to 'AzureOpenAI', 'OpenAI', or 'GitHub', and provide the configuration in the .env file")
-    exit(0)
+# Set the AI host to Azure, OpenAI, or GitHub Models (coming soon)
+deployment, client = get_client(AIhost)
 
 # Global variable to store the response identifier from the last API call
 previous_response_id = None
