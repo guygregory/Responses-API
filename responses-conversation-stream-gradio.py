@@ -1,4 +1,4 @@
-from openai import AzureOpenAI
+from openai import AzureOpenAI, OpenAI
 from dotenv import load_dotenv
 import os
 import gradio as gr
@@ -7,12 +7,32 @@ import base64
 # Load configuration settings from a .env file
 load_dotenv()
 
-# Initialize the Azure OpenAI client using environment variables
-client = AzureOpenAI(
-    api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    api_version=os.environ["AZURE_OPENAI_API_VERSION"],
-    azure_endpoint=os.environ["AZURE_OPENAI_API_ENDPOINT"]
-)
+# Set the AI host to Azure, OpenAI, or GitHub Models (coming soon)
+AIhost = "OpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
+
+if AIhost == "AzureOpenAI":
+    # Initialize the Azure OpenAI client using environment variables
+    deployment = os.environ["AZURE_OPENAI_API_MODEL"]    
+    client = AzureOpenAI(
+        api_key=os.environ["AZURE_OPENAI_API_KEY"],
+        api_version=os.environ["AZURE_OPENAI_API_VERSION"],
+        azure_endpoint=os.environ["AZURE_OPENAI_API_ENDPOINT"]
+    )
+
+elif AIhost == "OpenAI":
+    # Initialize the OpenAI client using environment variables
+    deployment = "gpt-4o-mini"
+    client = OpenAI()
+
+elif AIhost == "GitHub":
+    # To be implemented, once GitHub Models update their API to support Responses API
+    deployment = "gpt-4o-mini"
+    print("GitHub Models are not yet supported in this demo. Please check back later.")
+    exit(0)
+
+else:
+    print("Invalid AI host specified. Please set AIhost to 'AzureOpenAI', 'OpenAI', or 'GitHub', and provide the configuration in the .env file")
+    exit(0)
 
 # Global variable to store the response identifier from the last API call
 previous_response_id = None
@@ -51,7 +71,7 @@ def chat_stream(user_prompt, history, file_path):
     # Prepare parameters for the API call, including model name and streaming flag
     global previous_response_id
     params = {
-        "model": os.environ["AZURE_OPENAI_API_MODEL"],
+        "model": deployment,
         "input": [{"role": "user", "content": user_prompt}],
         "stream": True
     }
@@ -73,7 +93,7 @@ def chat_stream(user_prompt, history, file_path):
             ]
         })
 
-    # Initiate the streaming conversation using the Azure OpenAI client
+    # Initiate the streaming conversation using the client
     stream = client.responses.create(**params)
     
     # Process each event from the stream to build the complete assistant message
@@ -103,7 +123,7 @@ def clear_textbox():
 # Build the Gradio Blocks interface for the chat demo
 with gr.Blocks() as demo:
     # Header Markdown text for the demo UI, centered
-    gr.Markdown("<h2 style='text-align: center;'>Responses API on Azure OpenAI Demo</h2>")
+    gr.Markdown("<h2 style='text-align: center;'>Responses API Demo</h2>")
     
     # Chatbot component to display messages stored in a list of role-content dictionaries
     chatbot = gr.Chatbot(height=500, type="messages")
