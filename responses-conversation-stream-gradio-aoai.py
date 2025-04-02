@@ -96,16 +96,14 @@ def clear_chat():
     previous_response_id = None
     return [], [], None
 
+# Clears the textbox input
 def clear_textbox():
-    """
-    Clears the textbox input.
-    """
     return ""
 
 # Build the Gradio Blocks interface for the chat demo
 with gr.Blocks() as demo:
-    # Header Markdown text for the demo UI
-    gr.Markdown("## Responses API on Azure OpenAI Streaming Demo")
+    # Header Markdown text for the demo UI, centered
+    gr.Markdown("<h2 style='text-align: center;'>Responses API on Azure OpenAI Demo</h2>")
     
     # Chatbot component to display messages stored in a list of role-content dictionaries
     chatbot = gr.Chatbot(height=500, type="messages")
