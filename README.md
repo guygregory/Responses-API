@@ -10,7 +10,7 @@ A selection of simple Responses API samples, which cover:
 - [Structured Outputs](responses-structured-aoai.py)
 - Vision: [Image from a local file](responses-image-aoai.py) and [Image from a URL](responses-imageurl-aoai.py)
 
-[![image](https://github.com/user-attachments/assets/39fefeca-8d06-473a-8fef-48303f944d56)](responses-conversation-stream-gradio-aoai.py)
+[![ResponsesGIF](https://github.com/user-attachments/assets/1bc52798-0349-403c-8a1f-8cb8c7a4bd2b)](responses-conversation-stream-gradio-aoai.py)
 
 To be added:
 
