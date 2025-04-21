@@ -8,6 +8,7 @@ A selection of simple Responses API samples, which cover:
 - [Function calling](responses-function-weather-aoai.py)
 - [File Search](responses-filesearch-aoai.py)
 - [Structured Outputs](responses-structured-aoai.py)
+- [Reasoning](responses-reasoning-aoai.py)
 - Vision: [Image from a local file](responses-image-aoai.py) and [Image from a URL](responses-imageurl-aoai.py)
 
 [![ResponsesGIF](https://github.com/user-attachments/assets/1bc52798-0349-403c-8a1f-8cb8c7a4bd2b)](responses-conversation-stream-gradio.py)
