@@ -11,7 +11,7 @@ A selection of simple Responses API samples, which cover:
 - [Reasoning](responses-reasoning-aoai.py)
 - Vision: [Image from a local file](responses-image-aoai.py) and [Image from a URL](responses-imageurl-aoai.py)
 
-[![ResponsesGIF](https://github.com/user-attachments/assets/1bc52798-0349-403c-8a1f-8cb8c7a4bd2b)](responses-conversation-stream-gradio.py)
+[![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](responses-conversation-stream-gradio.py)
 
 # Semantic Kernel 
 As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and OpenAI. The following samples provide examples for conversation history, plugins, Web Search (currently OpenAI only), File Search, vision, and Structured Outputs.
