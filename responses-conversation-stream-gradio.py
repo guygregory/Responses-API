@@ -7,6 +7,9 @@ import base64
 # Load configuration settings from a .env file
 load_dotenv()
 
+# Set the demo title for the top of the app, otherwise leave blank to allow to maximize space
+demo_title = ""
+
 # Set the AI host to Azure, OpenAI, or GitHub Models (coming soon)
 AIhost = "AzureOpenAI" # set to "AzureOpenAI", "OpenAI", or "GitHub" based on your requirement
 
@@ -110,6 +113,7 @@ def chat_stream(user_prompt, history, file_path):
     reasoning_summary_buffer = []
     output_text_buffer = ""
     reasoning_summary_present = False
+    output_text_started = False  # Track if output_text has started
 
     for event in stream:
         # Record the response id from the first event
@@ -133,6 +137,7 @@ def chat_stream(user_prompt, history, file_path):
         if event.type == 'response.output_text.delta':
             if event.delta:
                 output_text_buffer += event.delta
+                output_text_started = True  # Set flag when output_text starts
 
         # On any update, re-render the assistant message
         if event.type in (
@@ -161,12 +166,13 @@ def chat_stream(user_prompt, history, file_path):
                     f"{summary_text}\n"
                     "</details></div>"
                 )
-            # Render output text section (always present)
-            content += (
-                "<div style='background-color:#f0f0f0;padding:10px;border-radius:5px;'>"
-                f"{output_text_buffer}"
-                "</div>"
-            )
+            # Only render output text bubble if output_text has started
+            if output_text_started:
+                content += (
+                    "<div style='background-color:#f0f0f0;padding:10px;border-radius:5px;'>"
+                    f"{output_text_buffer}"
+                    "</div>"
+                )
             assistant_message["content"] = content
             yield history, history
 
@@ -186,11 +192,13 @@ def chat_stream(user_prompt, history, file_path):
             f"{summary_text}\n"
             "</details></div>"
         )
-    content += (
-        "<div style='background-color:#f0f0f0;padding:10px;border-radius:5px;'>"
-        f"{output_text_buffer}"
-        "</div>"
-    )
+    # Only render output text bubble if output_text has started
+    if output_text_started:
+        content += (
+            "<div style='background-color:#f0f0f0;padding:10px;border-radius:5px;'>"
+            f"{output_text_buffer}"
+            "</div>"
+        )
     assistant_message["content"] = content
     yield history, history
 
@@ -208,26 +216,34 @@ def clear_textbox():
     return ""
 
 # Build the Gradio Blocks interface for the chat demo
-with gr.Blocks() as demo:
+with gr.Blocks(fill_height=True, fill_width=True) as demo:
     # Header Markdown text for the demo UI, centered
-    gr.Markdown("<h2 style='text-align: center;'>Responses API Demo</h2>")
+    if demo_title != "":
+        gr.Markdown(f"<h2 style='text-align: center;'>{demo_title}</h2>")
     
     # Chatbot component to display messages stored in a list of role-content dictionaries
-    chatbot = gr.Chatbot(height=550, type="messages")
+    chatbot = gr.Chatbot(type="messages", scale=1, render_markdown=True, sanitize_html=False)
     
     # State to maintain the conversation history between messages
     state = gr.State([])
-    
+
     # Textbox for user input with a placeholder message
     msg = gr.Textbox(show_label=False, placeholder="Type your message here and press Enter")
-    
+
     # Row containing the Submit and Clear buttons
     with gr.Row():
         submit_btn = gr.Button("Submit")
         clear_btn = gr.Button("Clear")
     
-    # File upload control for image inputs (placed below the buttons)
-    file_picker = gr.File(label="Upload an Image", file_count="single", type="filepath", file_types=[".jpg", ".jpeg", ".png"], height=140)
+    # Move the file upload control into an accordion at the bottom
+    with gr.Accordion("Click to upload an image (optional)", open=False):
+        file_picker = gr.File(
+            label="Choose an image file",
+            file_count="single",
+            type="filepath",
+            file_types=[".jpg", ".jpeg", ".png"],
+            height=140
+        )
     
     # Bind the Textbox submit action to the stream processing function and clear the textbox after submission
     msg.submit(fn=chat_stream, inputs=[msg, state, file_picker], outputs=[chatbot, state]).then(
