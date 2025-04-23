@@ -1,7 +1,7 @@
 # Responses API samples
 A selection of simple Responses API samples, which cover:
 
-- [Gradio-based chatbot with conversation history, image upload, and streaming (see screenshot below)](responses-conversation-stream-gradio.py)
+- [Gradio-based chatbot with conversation history, image upload, streaming, and 🆕 Reasoning Summary (see screenshot below)](responses-conversation-stream-gradio.py)
 - [Simple request/response](responses-basic-aoai.py)
 - [Simple conversation (referencing the previous message ID)](responses-conversation-aoai.py)
 - [Streaming using SSE](responses-stream-sse-aoai.py) and [Streaming using Async](responses-stream-async-aoai.py)
