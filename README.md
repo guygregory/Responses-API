@@ -1,15 +1,22 @@
 # Responses API samples
 A selection of simple Responses API samples, which cover:
 
-- [Gradio-based chatbot with conversation history, image upload, streaming, and 🆕 Reasoning Summary (see screenshot below)](responses-conversation-stream-gradio.py)
-- [Simple request/response](responses-basic-aoai.py)
-- [Simple conversation (referencing the previous message ID)](responses-conversation-aoai.py)
-- [Streaming using SSE](responses-stream-sse-aoai.py) and [Streaming using Async](responses-stream-async-aoai.py)
-- [Function calling](responses-function-weather-aoai.py)
-- [File Search](responses-filesearch-aoai.py)
-- [Structured Outputs](responses-structured-aoai.py)
-- [Reasoning](responses-reasoning-aoai.py)
-- Vision: [Image from a local file](responses-image-aoai.py) and [Image from a URL](responses-imageurl-aoai.py)
+|                                                                                 | [Previous generation API (202x-xx-xx)](https://learn.microsoft.com/en-gb/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution) | [v1 preview API](https://learn.microsoft.com/en-gb/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)                  |
+| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Gradio-based chatbot with conversation history, image upload, Reasoning Summary | [responses-conversation-stream-gradio.py](responses-conversation-stream-gradio.py)                                                              | [responses-conversation-stream-gradio-v1.py](responses-conversation-stream-gradio-v1.py)                                                   |
+| Simple request/response                                                         | [responses-basic-aoai.py](responses-basic-aoai.py)                                                                                              | [responses-basic-aoai-v1.py](responses-basic-aoai-v1.py)                                                                                   |
+| Simple conversation (referencing the previous message ID)                       | [responses-conversation-aoai.py](responses-conversation-aoai.py)                                                                                | [responses-conversation-aoai-v1.py](responses-conversation-aoai-v1.py)                                                                     |
+| Streaming using SSE and Streaming using Async                                   | [responses-stream-sse-aoai.py](responses-stream-sse-aoai.py), [responses-stream-async-aoai.py](responses-stream-async-aoai.py)                  | [responses-stream-sse-aoai-v1.py](responses-stream-sse-aoai-v1.py), [responses-stream-async-aoai-v1.py](responses-stream-async-aoai-v1.py) |
+| Function calling                                                                | [responses-function-weather-aoai.py](responses-function-weather-aoai.py)                                                                        | [responses-function-weather-aoai-v1.py](responses-function-weather-aoai-v1.py)                                                             |
+| File Search                                                                     | [responses-filesearch-aoai.py](responses-filesearch-aoai.py)                                                                                    | [responses-filesearch-aoai-v1.py](responses-filesearch-aoai-v1.py)                                                                         |
+| Structured Outputs                                                              | [responses-structured-aoai.py](responses-structured-aoai.py)                                                                                    | [responses-structured-aoai-v1.py](responses-structured-aoai-v1.py)                                                                         |
+| Reasoning                                                                       | [responses-reasoning-aoai.py](responses-reasoning-aoai.py)                                                                                      | [responses-reasoning-aoai-v1.py](responses-reasoning-aoai-v1.py)                                                                           |
+| Vision: Image from a local file and Image from a URL                            | [responses-image-aoai.py](responses-image-aoai.py), [responses-imageurl-aoai.py](responses-imageurl-aoai.py)                                    | [responses-image-aoai-v1.py](responses-image-aoai-v1.py), [responses-imageurl-aoai-v1.py](responses-imageurl-aoai-v1.py)                   |
+| 🆕 Image generation using gpt-image-1 with API key auth                         | n/a                                                                                                                                             | [responses-image-generate-aoai-v1.py](responses-image-generate-aoai-v1.py)                                                                 |
+| 🆕 Image generation using gpt-image-1 with Entra ID auth                        | n/a                                                                                                                                             | [responses-image-generate-entra-aoai-v1.py](responses-image-generate-entra-aoai-v1.py)                                                     |
+| 🆕 Background mode                                                              | n/a                                                                                                                                             | [responses-background-aoai-v1.py](responses-background-aoai-v1.py)                                                                         |
+
+
 
 [![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](responses-conversation-stream-gradio.py)
 
