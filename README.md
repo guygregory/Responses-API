@@ -15,8 +15,8 @@ A selection of simple Responses API samples, which cover:
 | 🆕 Image generation using gpt-image-1 with API key auth                         | n/a                                                                                                                                             | [responses-image-generate-aoai-v1.py](responses-image-generate-aoai-v1.py)                                                                 |
 | 🆕 Image generation using gpt-image-1 with Entra ID auth                        | n/a                                                                                                                                             | [responses-image-generate-entra-aoai-v1.py](responses-image-generate-entra-aoai-v1.py)                                                     |
 | 🆕 Background mode                                                              | n/a                                                                                                                                             | [responses-background-aoai-v1.py](responses-background-aoai-v1.py)                                                                         |
-
-
+| 🆕 MCP remote server with API key auth                                                               | n/a                                                                                                                                             | [responses-mcp-aoai-v1.py](responses-mcp-aoai-v1.py)                                                                         |
+| 🆕 MCP remote server with Entra ID auth                                                            | n/a                                                                                                                                             | [responses-mcp-entra-aoai-v1.py](responses-mcp-entra-aoai-v1.py)                                                                         |
 
 [![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](responses-conversation-stream-gradio.py)
 
