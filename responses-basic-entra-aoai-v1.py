@@ -16,8 +16,8 @@ client = AzureOpenAI(
 )
 
 response = client.responses.create(
-    model="gpt-4o", # replace with your model deployment name 
-    input="This is a test."
+    model=os.environ["AZURE_OPENAI_API_MODEL"],
+    input="Tell me a joke."
 
 )
 
