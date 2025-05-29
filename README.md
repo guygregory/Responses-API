@@ -26,16 +26,38 @@ As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and Ope
 
 [Getting started with Responses API in Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main/python/samples/getting_started_with_agents/openai_responses)
 
+# Why are their two sets of samples? Which API version should I use?
+Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
+- Ongoing access to the latest features with no need to update api-version each month.
+- OpenAI client support with minimal code changes to swap between OpenAI and Azure OpenAI when using key-based authentication.
+
+Code samples have been provided for both the v1 API Preview, and also the older API versions. The v1 API Preview samples have a v1.py suffix to distinguish them.
+
+If you want the latest features, I would recommend using the v1 API Preview, with the `api-version` set to `preview`.
+If you need a stable, GA version, and don't need the latest features, then you can use the older API. At time of writing, the latest GA API release is `2024-10-21`.
+
+[Azure OpenAI in Azure AI Foundry Models API lifecycle](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)
+
 # Recommended settings
 
 I've personally tested these Responses API samples using:
 
-- gpt-4o 2024-08-06 [(see docs for a full list of supported models and versions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#model-support)
+- gpt-4o 2024-08-06, gpt-4.1, o4-mini, and more [(see docs for a full list of supported models and versions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#model-support)
 - East US and Sweden Central [(see docs for a full list of supported regions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#region-availability)
 - Global Standard and Standard deployments
 - API version 2025-03-01-preview (2025-04-01-preview if using Reasoning Summaries)
 - OpenAI library 1.68.2 or above
 - Semantic Kernel 1.27 or above
+
+# Features currently unsupported on Responses API on Azure OpenAI
+- web_search tool (Azure AI Foundry Agent Service recommended if web search is needed)
+- Code Interpreter (again, Azure AI Foundry Agent Service supports this if required)
+
+# Further reading
+- [Introducing New Tools and Features in the Responses API in Azure AI Foundry](https://devblogs.microsoft.com/foundry/introducing-new-tools-and-features-in-the-responses-api-in-azure-ai-foundry/)
+- [Announcing the Responses API and Computer-Using Agent in Azure AI Foundry](https://azure.microsoft.com/blog/announcing-the-responses-api-and-computer-using-agent-in-azure-ai-foundry/)
+- [Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses)
+- [OpenAI documentation](https://platform.openai.com/docs/api-reference/responses/create)
 
 # Attribution
 These examples are loosely based on [@mrbullwinkle's](https://github.com/mrbullwinkle) samples from the [Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses), and also helped by the [documentation from OpenAI](https://platform.openai.com/docs/api-reference/responses/create). Thanks to [@moonbox3](https://github.com/moonbox3) for providing the Semantic Kernel samples.
