@@ -1,7 +1,7 @@
 # Responses API samples
 A selection of simple Responses API samples, which cover:
 
-|                                                                                 | [Previous generation API (202x-xx-xx)](https://learn.microsoft.com/en-gb/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution) | [v1 preview API](https://learn.microsoft.com/en-gb/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)                  |
+|                                                                                 | [Previous generation API (202x-xx-xx)](#why-are-there-two-sets-of-samples-which-api-version-should-i-use) | [v1 preview API](#why-are-there-two-sets-of-samples-which-api-version-should-i-use)                  |
 | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Gradio-based chatbot with conversation history, image upload, Reasoning Summary | [responses-conversation-stream-gradio.py](responses-conversation-stream-gradio.py)                                                              | [responses-conversation-stream-gradio-v1.py](responses-conversation-stream-gradio-v1.py)                                                   |
 | Simple request/response with API key auth                                                        | [responses-basic-aoai.py](responses-basic-aoai.py)                                                                                              | [responses-basic-aoai-v1.py](responses-basic-aoai-v1.py)                                                                                   |
@@ -26,7 +26,7 @@ As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and Ope
 
 [Getting started with Responses API in Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main/python/samples/getting_started_with_agents/openai_responses)
 
-# Why are their two sets of samples? Which API version should I use?
+# Why are there two sets of samples? Which API version should I use?
 Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
 - Ongoing access to the latest features with no need to update api-version each month.
 - OpenAI client support with minimal code changes to swap between OpenAI and Azure OpenAI when using key-based authentication.
