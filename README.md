@@ -21,11 +21,6 @@ A selection of simple Responses API samples, which cover:
 
 [![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](responses-conversation-stream-gradio.py)
 
-# Semantic Kernel 
-As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and OpenAI. The following samples provide examples for conversation history, plugins, Web Search (currently OpenAI only), File Search, vision, and Structured Outputs.
-
-[Getting started with Responses API in Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main/python/samples/getting_started_with_agents/openai_responses)
-
 # Why are there two sets of samples? Which API version should I use?
 Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
 - Ongoing access to the latest features with no need to update api-version each month.
@@ -37,6 +32,11 @@ If you want the latest features, I would recommend using the v1 API Preview, wit
 If you need a stable, GA version, and don't need the latest features, then you can use the older API. At time of writing, the latest GA API release is `2024-10-21`.
 
 [Azure OpenAI in Azure AI Foundry Models API lifecycle](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)
+
+# Semantic Kernel 
+As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and OpenAI. The following samples provide examples for conversation history, plugins, Web Search (currently OpenAI only), File Search, vision, and Structured Outputs.
+
+[Getting started with Responses API in Semantic Kernel](https://github.com/microsoft/semantic-kernel/tree/main/python/samples/getting_started_with_agents/openai_responses)
 
 # Recommended settings
 
