@@ -41,10 +41,5 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -n $(git status --porcelain) ]]; then
-            git add src/*.py
-            git commit -m "Move Python files to src folder via workflow"
-            git push
-          else
-            echo "No changes to commit."
-          fi
+          git add .
+          git commit -m "Move Python files to src and delete others in folder src via workflow ${{ github.run_number }}"     
