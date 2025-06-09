@@ -1,0 +1,46 @@
+name: Move Python Files to src and delete them
+on:
+  workflow_dispatch:
+jobs:
+  move-py-files:
+    name: Build on ${{ github.ref_name }} at ${{ github.run_number }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Check if src folder exists
+        id: check_src
+        run: |
+          if [ -d "src" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Move .py files to src folder
+        if: steps.check_src.outputs.exists == 'true'
+        run: |
+          shopt -s globstar
+          for file in ./**/*.py; do
+            # Exclude files already in src and hidden directories
+            if [[ "$file" != ./src/* && "$file" != ./.github/* && "$file" != ./.venv/* && -f "$file" ]]; then
+              mv "$file" src/
+            fi
+          done
+      - name: Remove .py files outside src folder
+        if: steps.check_src.outputs.exists == 'true'
+        run: |
+          shopt -s globstar
+          for file in ./**/*.py; do
+            # Exclude files already in src and hidden directories
+            if [[ "$file" != ./src/* && "$file" != ./.github/* && "$file" != ./.venv/* && -f "$file" ]]; then
+              rm "$file"
+            fi
+          done
+      - name: Commit and push changes
+        if: steps.check_src.outputs.exists == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Move Python files to src and delete others in folder src via workflow ${{ github.run_number }}"
+          git push
