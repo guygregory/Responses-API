@@ -1,16 +1,13 @@
-name: Move Python Files to src
-
+name: Move Python Files to src and delete them
 on:
   workflow_dispatch:
-
 jobs:
   move-py-files:
+    name: Build on ${{ github.ref_name }} at ${{ github.run_number }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Check if src folder exists
         id: check_src
         run: |
@@ -19,7 +16,6 @@ jobs:
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
-
       - name: Move .py files to src folder
         if: steps.check_src.outputs.exists == 'true'
         run: |
@@ -30,7 +26,16 @@ jobs:
               mv "$file" src/
             fi
           done
-
+      - name: Remove .py files outside src folder
+        if: steps.check_src.outputs.exists == 'true'
+        run: |
+          shopt -s globstar
+          for file in ./**/*.py; do
+            # Exclude files already in src and hidden directories
+            if [[ "$file" != ./src/* && "$file" != ./.github/* && "$file" != ./.venv/* && -f "$file" ]]; then
+              rm "$file"
+            fi
+          done
       - name: Commit and push changes
         if: steps.check_src.outputs.exists == 'true'
         run: |
