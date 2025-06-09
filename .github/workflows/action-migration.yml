@@ -1,0 +1,47 @@
+name: "Pull Request Labeler"
+run-name: ${{ github.actor }} is moving the data at $(date)
+push:
+    branches:
+      - main      
+workflow_dispatch:
+     inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug    
+env:
+  FOLDER_NAME: src
+jobs:
+  move-to-folder:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - name: Create {{ env.FOLDER_NAME }} folder if missing
+        run: |
+          if [ ! -d "src" ]; then
+            mkdir {{ env.FOLDER_NAME }}
+          fi
+      - name: Move files to {{ env.FOLDER_NAME }}/
+        run: |          
+          mv *.py {{ env.FOLDER_NAME }}/
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add {{ env.FOLDER_NAME }}
+          git commit -m "Move files to {{ env.FOLDER_NAME }} folder"
+          git push
+
