@@ -20,12 +20,12 @@ response = client.responses.create(
     tools=[
         {
             "type": "mcp",
-            "server_label": "cloudflare",
-            "server_url": "https://docs.mcp.cloudflare.com/sse",
+            "server_label": "MicrosoftLearn",
+            "server_url": "https://learn.microsoft.com/api/mcp",
             "require_approval": "never",
         },
     ],
-    input="Do Cloudflare Workers costs depend on response sizes? I want to serve some images (map tiles) from an R2 bucket and I'm concerned about costs.",
+    input="Provide a one-sentence summary of Azure AI Search, and provide a link to a Quickstart guide.",
 )
 
 print(response.output_text)
