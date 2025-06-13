@@ -3,17 +3,6 @@ from openai import OpenAI
 import gradio as gr
 from dotenv import load_dotenv
 
-# Run the program as:
-# uv run main.py
-
-# These MCP servers have to be running in SSE mode before you start this Python program:
-#
-# uvx --prerelease=allow --from git+https://github.com/azure-ai-foundry/mcp-foundry.git run-azure-ai-foundry-mcp --transport sse
-#
-# -- or simply run ---
-#
-# bash start-sse.sh in the gradio directory
-
 # Load configuration settings from a .env file
 load_dotenv()
 
