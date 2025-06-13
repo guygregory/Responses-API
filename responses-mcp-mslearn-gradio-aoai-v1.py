@@ -51,7 +51,7 @@ def chat_stream(user_prompt, history):
         "tools": [
             {
                 "type": "mcp",
-                "server_label": "MicrosoftLearn",
+                "server_label": "MicrosoftDocs",
                 "server_url": "https://learn.microsoft.com/api/mcp",
                 "require_approval": "never",
             },
