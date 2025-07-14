@@ -1,0 +1,43 @@
+import base64
+from openai import AzureOpenAI
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+)
+
+client = AzureOpenAI(  
+  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"), 
+  azure_ad_token_provider=token_provider,
+  api_version="preview"
+)
+
+with open("employee_handbook.pdf", "rb") as f: # assumes PDF is in the same directory as the executing script
+    data = f.read()
+
+base64_string = base64.b64encode(data).decode("utf-8")
+
+response = client.responses.create(
+    model=os.environ["AZURE_OPENAI_API_MODEL"],
+    input=[
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "input_file",
+                    "filename": "employee_handbook.pdf",
+                    "file_data": f"data:application/pdf;base64,{base64_string}",
+                },
+                {
+                    "type": "input_text",
+                    "text": "What are the company values?",
+                },
+            ],
+        },
+    ]
+)
+
+print(response.output_text)
