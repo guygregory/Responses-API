@@ -84,7 +84,6 @@ jobs:
           <!-- AOAI-RESULTS-END -->
           EOF
 
-          # inject between the markers in README.md
           awk -v new="$SNIPPET" '
             /<!-- AOAI-RESULTS-START -->/ { print new; skip=1; next }
             /<!-- AOAI-RESULTS-END -->/   { print; skip=0; next }
