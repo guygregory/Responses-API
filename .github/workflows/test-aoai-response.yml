@@ -1,4 +1,4 @@
-      - name: 🧪 Run script & build report
+      - name: Test AOAI Responses API
         id: test
         env:
           AZURE_OPENAI_API_KEY:        ${{ secrets.AZURE_OPENAI_API_KEY }}
