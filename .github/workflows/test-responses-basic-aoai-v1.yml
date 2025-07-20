@@ -1,67 +1,102 @@
-name: Validate Azure OpenAI response
+name: Validate Azure OpenAI response
 
 on:
-  workflow_dispatch:        # run on demand from the Actions tab
+  workflow_dispatch:
 
 jobs:
   run-validation:
     runs-on: ubuntu-latest
-    environment: responses   # 🔑 unlocks the environment‑scoped secrets
+    environment: responses
 
-    # Expose the environment secrets as real process env‑vars
     env:
       AZURE_OPENAI_API_KEY:       ${{ secrets.AZURE_OPENAI_API_KEY }}
       AZURE_OPENAI_V1_API_ENDPOINT: ${{ secrets.AZURE_OPENAI_V1_API_ENDPOINT }}
       AZURE_OPENAI_API_MODEL:     ${{ secrets.AZURE_OPENAI_API_MODEL }}
 
     steps:
-    # 1 – check out the repo so the script is available
-    - uses: actions/checkout@v4
+      # 1 – check out the repo so the script is available
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # 2 – set up Python
-    - uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
+      # 2 – set up Python
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    # 3 – install the script’s two lightweight deps
-    - name: Install requirements
-      run: |
-        python -m pip install --upgrade pip
-        pip install openai python-dotenv
+      # 3 – install the script’s two lightweight deps
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install openai python-dotenv jq
 
-    # 4 – run the script, grade the result, assemble a report
-    - name: Execute script and capture outcome
-      id: test
-      shell: bash
-      run: |
-        set +e                                 # we want to handle failures ourselves
-        TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+      # 4 – run the script, grade the result, assemble a report
+      - name: Execute script and capture outcome
+        id: test
+        shell: bash
+        run: |
+          set +e
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-        # === run the user script ===
-        python responses-basic-aoai-v1.py > out.txt 2>&1
-        EXIT_CODE=$?
+          python responses-basic-aoai-v1.py > out.txt 2>&1
+          EXIT_CODE=$?
 
-        # === decide pass / fail ===
-        if [[ $EXIT_CODE -eq 0 && -s out.txt ]]; then
-          PASS_FAIL="PASS"
-        else
-          PASS_FAIL="FAIL"
-        fi
+          if [[ $EXIT_CODE -eq 0 && -s out.txt ]]; then
+            PASS_FAIL="PASS"
+          else
+            PASS_FAIL="FAIL"
+          fi
 
-        # === build JSON report ===
-        jq -n \
-          --arg date        "$TIMESTAMP" \
-          --arg output      "$(cat out.txt | tr -d '\r')" \
-          --arg pass_fail   "$PASS_FAIL" \
-          --argjson code    "$EXIT_CODE" \
-          '{test_run_date: $date,
-            output:        $output,
-            pass_fail:     $pass_fail,
-            error_code:    $code}' > aoai-test-result.json
+          jq -n \
+            --arg date        "$TIMESTAMP" \
+            --arg output      "$(cat out.txt | tr -d '\r')" \
+            --arg pass_fail   "$PASS_FAIL" \
+            --argjson code    "$EXIT_CODE" \
+            '{test_run_date: $date,
+              output:        $output,
+              pass_fail:     $pass_fail,
+              error_code:    $code}' \
+            > aoai-test-result.json
 
-    # 5 – make the report downloadable from the run summary
-    - name: Upload result artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: aoai-response-test         # folder name visible in the UI
-        path: aoai-test-result.json
+      # 5 – make the report downloadable from the run summary
+      - name: Upload result artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aoai-response-test
+          path: aoai-test-result.json
+
+      # 6 – parse JSON and inject into README
+      - name: Parse results and update README
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PASS=$(jq -r .pass_fail aoai-test-result.json)
+          CODE=$(jq -r .error_code aoai-test-result.json)
+          DATE=$(jq -r .test_run_date aoai-test-result.json)
+
+          read -r -d '' SNIPPET << EOF
+<!-- AOAI-RESULTS-START -->
+## ⚙️ Last Azure OpenAI Test
+- **Date:** $DATE
+- **Result:** $PASS
+- **Exit code:** $CODE
+<!-- AOAI-RESULTS-END -->
+EOF
+
+          awk -v new="$SNIPPET" '
+            /<!-- AOAI-RESULTS-START -->/ { print new; skip=1; next }
+            /<!-- AOAI-RESULTS-END -->/   { print; skip=0; next }
+            skip { next }
+            { print }
+          ' README.md > README.tmp && mv README.tmp README.md
+
+      # 7 – commit & push the updated README back
+      - name: Commit updated README
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: chore: update README with latest AOAI test results
+          file_pattern: README.md
+          author_name: GitHub Actions
+          author_email: actions@github.com
+          branch: ${{ github.ref_name }}
