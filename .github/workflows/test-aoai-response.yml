@@ -1,13 +1,12 @@
 name: Test Azure OpenAI response
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:           # run only when you click “Run workflow”
 
 jobs:
   response-test:
-    name: Run & validate responses-basic-aoai-v1.py
     runs-on: ubuntu-latest
-    environment: responses
+    environment: responses     # pulls in the secrets already in that env
 
     steps:
       - name: ⬇️ Check out repo
@@ -26,25 +25,26 @@ jobs:
       # ─────────────   CORE TEST STEP   ─────────────
       - name: 🧪 Run script & build report
         id: test
+        shell: python            # <<< everything below is pure Python
         env:
           AZURE_OPENAI_API_KEY:        ${{ secrets.AZURE_OPENAI_API_KEY }}
           AZURE_OPENAI_V1_API_ENDPOINT: ${{ secrets.AZURE_OPENAI_V1_API_ENDPOINT }}
           AZURE_OPENAI_API_MODEL:       ${{ secrets.AZURE_OPENAI_API_MODEL }}
         run: |
-          python - <<'PY'
-          import datetime, json, os, subprocess, sys, pathlib
+          import datetime, json, pathlib, subprocess, sys
 
-          # Execute the existing script and capture its stdout / exit code
+          # run the existing file and capture its stdout / exit code
           proc = subprocess.run(
               [sys.executable, "responses-basic-aoai-v1.py"],
               capture_output=True, text=True
           )
-          output     = proc.stdout.strip()
-          error_code = proc.returncode
-          passed     = bool(output) and error_code == 0   # tweak this test however you like
+          output      = proc.stdout.strip()
+          error_code  = proc.returncode
+          passed      = bool(output) and error_code == 0   # tweak if you need stricter logic
 
           result = {
-              "run_timestamp_utc": datetime.datetime.utcnow().isoformat(timespec="seconds") + "Z",
+              "run_timestamp_utc": datetime.datetime.utcnow()
+                                  .isoformat(timespec="seconds") + "Z",
               "output": output,
               "pass": passed,
               "error_code": error_code,
@@ -54,14 +54,13 @@ jobs:
               json.dumps(result, indent=2), encoding="utf-8"
           )
 
-          # Exit non‑zero if the test failed so the job goes red
+          # Fail the job if the test failed
           if not passed:
               sys.exit(error_code or 1)
-          PY
 
       # ─────────────   UPLOAD REPORT   ─────────────
       - name: 📤 Upload test artifact
-        if: always()                 # run even if the previous step failed
+        if: always()               # still run even if the step above failed
         uses: actions/upload-artifact@v4
         with:
           name: aoai-response-test
