@@ -30,35 +30,88 @@ jobs:
       run: |
         echo "Testing responses-basic-aoai-v1.py script..."
         
+        # Create test results directory
+        mkdir -p test-results
+        
+        # Get current timestamp
+        timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        echo "Test run timestamp: $timestamp"
+        
         # Run the script and capture output
         python responses-basic-aoai-v1.py > output.txt 2>&1
         exit_code=$?
         
+        # Initialize test result variables
+        pass_fail="PASS"
+        error_code=""
+        output_text=""
+        
         # Check if script executed successfully
         if [ $exit_code -eq 0 ]; then
           echo "✅ Script executed successfully"
+          
+          # Check if output was generated and capture it
+          if [ -s output.txt ]; then
+            output_text=$(cat output.txt)
+            echo "✅ Script produced output:"
+            echo "$output_text"
+            
+            # Test whether response.output_text contains a valid string
+            # Valid means: non-empty, no error indicators, and actual content
+            if [ -n "$output_text" ] && ! echo "$output_text" | grep -qi "error\|exception\|traceback\|failed\|none\|null"; then
+              echo "✅ Output contains valid string content"
+              pass_fail="PASS"
+            else
+              echo "❌ Output does not contain valid string content"
+              pass_fail="FAIL"
+              error_code="INVALID_OUTPUT"
+            fi
+          else
+            echo "❌ Script produced no output"
+            pass_fail="FAIL"
+            error_code="NO_OUTPUT"
+          fi
         else
           echo "❌ Script failed with exit code: $exit_code"
           echo "Error output:"
           cat output.txt
-          exit 1
+          output_text=$(cat output.txt)
+          pass_fail="FAIL"
+          error_code="SCRIPT_ERROR_$exit_code"
         fi
         
-        # Check if output was generated
-        if [ -s output.txt ]; then
-          echo "✅ Script produced output:"
-          cat output.txt
-          
-          # Basic validation that output is not empty and doesn't contain common error patterns
-          if grep -qi "error\|exception\|traceback\|failed" output.txt; then
-            echo "❌ Output contains error indicators"
-            exit 1
-          else
-            echo "✅ Output appears to be valid (no error indicators found)"
-          fi
+        # Create test results JSON (using jq for proper JSON formatting)
+        jq -n \
+          --arg timestamp "$timestamp" \
+          --arg output "$output_text" \
+          --arg pass_fail "$pass_fail" \
+          --arg error_code "$error_code" \
+          '{
+            test_last_run_date: $timestamp,
+            output: $output,
+            pass_fail: $pass_fail,
+            error_code: $error_code
+          }' > test-results/test-results.json
+        
+        # Display final results
+        echo "=== Test Results ==="
+        echo "Timestamp: $timestamp"
+        echo "Pass/Fail: $pass_fail"
+        echo "Error Code: $error_code"
+        echo "Output: $output_text"
+        
+        # Exit with error if test failed
+        if [ "$pass_fail" = "FAIL" ]; then
+          echo "❌ Test failed"
+          exit 1
         else
-          echo "❌ Script produced no output"
-          exit 1
+          echo "🎉 Test completed successfully!"
         fi
         
-        echo "🎉 Test completed successfully!"
+    - name: Upload test results artifact
+      uses: actions/upload-artifact@v4
+      if: always()  # Upload artifact even if the test fails
+      with:
+        name: azure-openai-test-results
+        path: test-results/
+        retention-days: 30
