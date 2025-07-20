@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -31,6 +31,23 @@ jobs:
         run: |
           echo "Testing responses-basic-aoai-v1.py script..."
 
+          # Verify required environment variables are set
+          if [ -z "$AZURE_OPENAI_API_KEY" ] || [ -z "$AZURE_OPENAI_V1_API_ENDPOINT" ] || [ -z "$AZURE_OPENAI_API_MODEL" ]; then
+            echo "❌ Error: Required environment variables are not set"
+            echo "AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:+set}"
+            echo "AZURE_OPENAI_V1_API_ENDPOINT: ${AZURE_OPENAI_V1_API_ENDPOINT:+set}"
+            echo "AZURE_OPENAI_API_MODEL: ${AZURE_OPENAI_API_MODEL:+set}"
+            exit 1
+          fi
+
+          # Verify jq is available
+          if ! command -v jq > /dev/null; then
+            echo "❌ Error: jq is not available"
+            exit 1
+          fi
+
+          echo "✅ Environment check passed"
+
           # Create test results directory
           mkdir -p test-results
 
@@ -39,6 +56,7 @@ jobs:
           echo "Test run timestamp: $timestamp"
 
           # Run the script and capture output
+          echo "Running Python script..."
           python responses-basic-aoai-v1.py > output.txt 2>&1
           exit_code=$?
 
@@ -93,6 +111,16 @@ jobs:
               pass_fail: $pass_fail,
               error_code: $error_code
             }' > test-results/test-results.json
+
+          # Also create a human-readable summary
+          echo "Azure OpenAI Responses API Test Results" > test-results/test-summary.txt
+          echo "========================================" >> test-results/test-summary.txt
+          echo "Test Run Date: $timestamp" >> test-results/test-summary.txt
+          echo "Result: $pass_fail" >> test-results/test-summary.txt
+          echo "Error Code: $error_code" >> test-results/test-summary.txt
+          echo "" >> test-results/test-summary.txt
+          echo "Output:" >> test-results/test-summary.txt
+          echo "$output_text" >> test-results/test-summary.txt
 
           # Display final results
           echo "=== Test Results ==="
