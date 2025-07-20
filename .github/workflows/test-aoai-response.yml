@@ -1,4 +1,4 @@
-name: Test AOAI Responses API
+name: Test Azure OpenAI response
 
 on:
   workflow_dispatch:
@@ -32,33 +32,32 @@ jobs:
           AZURE_OPENAI_API_MODEL:       ${{ secrets.AZURE_OPENAI_API_MODEL }}
         run: |
           python - <<'PY'
-import datetime, json, os, subprocess, sys, textwrap, shlex, pathlib
+          import datetime, json, os, subprocess, sys, pathlib
 
-# Execute the existing script and capture its stdout / exit code
-proc = subprocess.run(
-    [sys.executable, "responses-basic-aoai-v1.py"],
-    capture_output=True, text=True
-)
-output     = proc.stdout.strip()
-error_code = proc.returncode
-passed     = bool(output) and error_code == 0   # tweak this test however you like
+          # Execute the existing script and capture its stdout / exit code
+          proc = subprocess.run(
+              [sys.executable, "responses-basic-aoai-v1.py"],
+              capture_output=True, text=True
+          )
+          output     = proc.stdout.strip()
+          error_code = proc.returncode
+          passed     = bool(output) and error_code == 0   # tweak this test however you like
 
-result = {
-    "run_timestamp_utc": datetime.datetime.utcnow().isoformat(timespec="seconds") + "Z",
-    "output": output,
-    "pass": passed,
-    "error_code": error_code,
-}
+          result = {
+              "run_timestamp_utc": datetime.datetime.utcnow().isoformat(timespec="seconds") + "Z",
+              "output": output,
+              "pass": passed,
+              "error_code": error_code,
+          }
 
-path = pathlib.Path("aoai_test_result.json")
-path.write_text(json.dumps(result, indent=2), encoding="utf-8")
+          pathlib.Path("aoai_test_result.json").write_text(
+              json.dumps(result, indent=2), encoding="utf-8"
+          )
 
-# Surface the “pass” status to later steps
-print(f"pass={passed}", file=sys.stderr)
-# Exit non‑zero only if you want the job to fail on an invalid response:
-if not passed:
-    sys.exit(error_code or 1)
-PY
+          # Exit non‑zero if the test failed so the job goes red
+          if not passed:
+              sys.exit(error_code or 1)
+          PY
 
       # ─────────────   UPLOAD REPORT   ─────────────
       - name: 📤 Upload test artifact
