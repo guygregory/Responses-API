@@ -9,9 +9,9 @@ jobs:
     environment: responses
 
     env:
-      AZURE_OPENAI_API_KEY:       ${{ secrets.AZURE_OPENAI_API_KEY }}
+      AZURE_OPENAI_API_KEY:        ${{ secrets.AZURE_OPENAI_API_KEY }}
       AZURE_OPENAI_V1_API_ENDPOINT: ${{ secrets.AZURE_OPENAI_V1_API_ENDPOINT }}
-      AZURE_OPENAI_API_MODEL:     ${{ secrets.AZURE_OPENAI_API_MODEL }}
+      AZURE_OPENAI_API_MODEL:      ${{ secrets.AZURE_OPENAI_API_MODEL }}
 
     steps:
       # 1 – check out the repo so the script is available
@@ -48,15 +48,15 @@ jobs:
           fi
 
           jq -n \
-            --arg date        "$TIMESTAMP" \
-            --arg output      "$(cat out.txt | tr -d '\r')" \
-            --arg pass_fail   "$PASS_FAIL" \
-            --argjson code    "$EXIT_CODE" \
+            --arg date      "$TIMESTAMP" \
+            --arg output    "$(tr -d '\r' < out.txt)" \
+            --arg pass_fail "$PASS_FAIL" \
+            --argjson code  "$EXIT_CODE" \
             '{test_run_date: $date,
               output:        $output,
               pass_fail:     $pass_fail,
               error_code:    $code}' \
-            > aoai-test-result.json
+          > aoai-test-result.json
 
       # 5 – make the report downloadable from the run summary
       - name: Upload result artifact
@@ -75,15 +75,16 @@ jobs:
           CODE=$(jq -r .error_code aoai-test-result.json)
           DATE=$(jq -r .test_run_date aoai-test-result.json)
 
-          read -r -d '' SNIPPET << EOF
-<!-- AOAI-RESULTS-START -->
-## ⚙️ Last Azure OpenAI Test
-- **Date:** $DATE
-- **Result:** $PASS
-- **Exit code:** $CODE
-<!-- AOAI-RESULTS-END -->
-EOF
+          read -r -d '' SNIPPET << 'EOF'
+          <!-- AOAI-RESULTS-START -->
+          ## ⚙️ Last Azure OpenAI Test
+          - **Date:** $DATE
+          - **Result:** $PASS
+          - **Exit code:** $CODE
+          <!-- AOAI-RESULTS-END -->
+          EOF
 
+          # inject between the markers in README.md
           awk -v new="$SNIPPET" '
             /<!-- AOAI-RESULTS-START -->/ { print new; skip=1; next }
             /<!-- AOAI-RESULTS-END -->/   { print; skip=0; next }
