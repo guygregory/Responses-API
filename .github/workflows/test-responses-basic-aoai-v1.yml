@@ -5,33 +5,32 @@ on:
 
 jobs:
   run-validation:
+    name: Run AOAI basic response validation
     runs-on: ubuntu-latest
     environment: responses
 
     env:
-      AZURE_OPENAI_API_KEY:        ${{ secrets.AZURE_OPENAI_API_KEY }}
+      AZURE_OPENAI_API_KEY:         ${{ secrets.AZURE_OPENAI_API_KEY }}
       AZURE_OPENAI_V1_API_ENDPOINT: ${{ secrets.AZURE_OPENAI_V1_API_ENDPOINT }}
-      AZURE_OPENAI_API_MODEL:      ${{ secrets.AZURE_OPENAI_API_MODEL }}
+      AZURE_OPENAI_API_MODEL:       ${{ secrets.AZURE_OPENAI_API_MODEL }}
 
     steps:
-      # 1 – check out the repo so the script is available
-      - name: Checkout repository
+      - name: 📥 Checkout repository
         uses: actions/checkout@v4
 
-      # 2 – set up Python
-      - name: Setup Python 3.11
+      - name: 🐍 Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 3 – install the script’s two lightweight deps
-      - name: Install requirements
+      - name: 📦 Install requirements
         run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
           python -m pip install --upgrade pip
-          pip install openai python-dotenv jq
+          pip install openai python-dotenv
 
-      # 4 – run the script, grade the result, assemble a report
-      - name: Execute script and capture outcome
+      - name: ▶️ Execute script and capture outcome
         id: test
         shell: bash
         run: |
@@ -49,33 +48,33 @@ jobs:
 
           jq -n \
             --arg date      "$TIMESTAMP" \
-            --arg output    "$(tr -d '\r' < out.txt)" \
+            --arg output    "$(cat out.txt | tr -d '\r')" \
             --arg pass_fail "$PASS_FAIL" \
             --argjson code  "$EXIT_CODE" \
             '{test_run_date: $date,
-              output:        $output,
-              pass_fail:     $pass_fail,
-              error_code:    $code}' \
-          > aoai-test-result.json
+              output:       $output,
+              pass_fail:    $pass_fail,
+              error_code:   $code}' \
+            > aoai-test-result.json
 
-      # 5 – make the report downloadable from the run summary
-      - name: Upload result artifact
+      - name: 📤 Upload result artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: aoai-response-test
           path: aoai-test-result.json
 
-      # 6 – parse JSON and inject into README
-      - name: Parse results and update README
+      - name: 📝 Parse results and update README
+        if: always()
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PASS=$(jq -r .pass_fail aoai-test-result.json)
-          CODE=$(jq -r .error_code aoai-test-result.json)
-          DATE=$(jq -r .test_run_date aoai-test-result.json)
+          PASS=$(jq -r .pass_fail        aoai-test-result.json)
+          CODE=$(jq -r .error_code       aoai-test-result.json)
+          DATE=$(jq -r .test_run_date    aoai-test-result.json)
 
-          read -r -d '' SNIPPET << 'EOF'
+          read -r -d '' SNIPPET <<EOF
           <!-- AOAI-RESULTS-START -->
           ## ⚙️ Last Azure OpenAI Test
           - **Date:** $DATE
@@ -91,11 +90,13 @@ jobs:
             { print }
           ' README.md > README.tmp && mv README.tmp README.md
 
-      # 7 – commit & push the updated README back
-      - name: Commit updated README
+      - name: 🔀 Commit updated README
+        if: >
+          github.event_name == 'workflow_dispatch' &&
+          github.actor != 'github-actions[bot]'
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: chore: update README with latest AOAI test results
+          commit_message: 'chore: update README with latest AOAI test results'
           file_pattern: README.md
           author_name: GitHub Actions
           author_email: actions@github.com
