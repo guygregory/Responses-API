@@ -65,3 +65,43 @@ jobs:
       with:
         name: aoai-response-test         # folder name visible in the UI
         path: aoai-test-result.json
+
+    # 6 – parse JSON and inject into README
+    - name: Parse results and update README
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # read the values
+        PASS=$(jq -r .pass_fail aoai-test-result.json)
+        CODE=$(jq -r .error_code aoai-test-result.json)
+        DATE=$(jq -r .test_run_date aoai-test-result.json)
+
+        # build the markdown snippet
+        read -r -d '' SNIPPET << EOF
+        <!-- AOAI-RESULTS-START -->
+        ## ⚙️ Last Azure OpenAI Test
+        - **Date:** $DATE
+        - **Result:** $PASS
+        - **Exit code:** $CODE
+        <!-- AOAI-RESULTS-END -->
+        EOF
+
+        # replace the section between the markers in README.md
+        # (assumes README.md already has those two markers somewhere)
+        awk -v new="$SNIPPET" '
+          /<!-- AOAI-RESULTS-START -->/ { print new; skip=1; next }
+          /<!-- AOAI-RESULTS-END -->/   { print; skip=0; next }
+          skip { next }
+          { print }
+        ' README.md > README.tmp && mv README.tmp README.md
+
+    # 7 – commit & push the updated README back
+    - name: Commit updated README
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: chore: update README with latest AOAI test results
+        file_pattern: README.md
+        author_name: GitHub Actions
+        author_email: actions@github.com
+        branch: ${{ github.ref_name }}
