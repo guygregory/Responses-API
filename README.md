@@ -64,13 +64,3 @@ I've personally tested these Responses API samples using:
 
 # Attribution
 These examples are loosely based on [@mrbullwinkle's](https://github.com/mrbullwinkle) samples from the [Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses), and also helped by the [documentation from OpenAI](https://platform.openai.com/docs/api-reference/responses/create). Thanks to [@moonbox3](https://github.com/moonbox3) for providing the Semantic Kernel samples. Thanks to Rafal Rutyna for providing useful information on the May 2025 updates.
-# Latest test run results
-
-This section summarizes the most recent run of the `test-responses-basic-aoai-v1` GitHub Action (tests for `responses-basic-aoai-v1.py`):
-
-- **Date (UTC):** 2025-07-21 00:10:19
-- **Pass/Fail:** PASS
-- **Error Code:** 0
-- **Output:** Why don't skeletons fight each other?
-
-  They don't have the guts!
