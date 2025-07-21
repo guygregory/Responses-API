@@ -97,11 +97,21 @@ jobs:
         ' README.md > README.tmp && mv README.tmp README.md
 
     # 7 – commit & push the updated README back
-    - name: Commit updated README
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: chore: update README with latest AOAI test results
-        file_pattern: README.md
-        author_name: GitHub Actions
-        author_email: actions@github.com
-        branch: ${{ github.ref_name }}
+    - name: Commit and push updated README
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # ensure we can push back to the repo
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+
+        # only commit if there are changes
+        if git diff --quiet README.md; then
+          echo "No README changes to commit."
+        else
+          git add README.md
+          git commit -m "chore: update README with latest AOAI test results"
+          git push origin ${{ github.ref_name }}
+        fi
