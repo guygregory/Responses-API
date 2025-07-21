@@ -24,10 +24,6 @@ A selection of simple Responses API samples, which cover:
 
 [![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](responses-conversation-stream-gradio.py)
 
-# Testing
-<!-- AOAI-RESULTS-START -->
-<!-- AOAI-RESULTS-END -->
-
 # Why are there two sets of samples? Which API version should I use?
 Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
 - Ongoing access to the latest features with no need to update api-version each month.
