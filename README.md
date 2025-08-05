@@ -55,7 +55,6 @@ I've personally tested these Responses API samples using:
 
 # Features currently unsupported on Responses API on Azure OpenAI
 - web_search tool (Azure AI Foundry Agent Service recommended if web search is needed)
-- Code Interpreter (again, Azure AI Foundry Agent Service supports this if required)
 
 # Further reading
 - [Introducing New Tools and Features in the Responses API in Azure AI Foundry](https://devblogs.microsoft.com/foundry/introducing-new-tools-and-features-in-the-responses-api-in-azure-ai-foundry/)
