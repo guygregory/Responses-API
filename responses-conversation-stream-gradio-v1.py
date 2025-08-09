@@ -19,17 +19,17 @@ def get_client(host: str):
     Exits the application if an unsupported host is provided.
     """
     if host == "AzureOpenAI":
-        deployment = os.environ["AZURE_OPENAI_API_MODEL"]
+        deployment = os.getenv("AZURE_OPENAI_API_MODEL")
         client = OpenAI(
             api_key=os.getenv("AZURE_OPENAI_API_KEY"),
             base_url=os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
             default_query={"api-version": "preview"}, 
         )
     elif host == "OpenAI":
-        deployment = "o4-mini"
+        deployment = "gpt-5"
         client = OpenAI()
     elif host == "GitHub":
-        deployment = "o4-mini"
+        deployment = "gpt-5"
         print("GitHub Models are not yet supported in this demo. Please check back later.")
         exit(0)
     else:
@@ -79,11 +79,12 @@ def chat_stream(user_prompt, history, file_path):
     params = {
         "model": deployment,
         "input": [{"role": "user", "content": user_prompt}],
-        "stream": True
+        "stream": True,
+        "text": {"verbosity": "medium"}
     }
     
     # Add reasoning parameters if the model supports it
-    if deployment in ["o4-mini", "o3"]:
+    if deployment in ["o4-mini", "o3", "gpt-5"]:
         params["reasoning"] = {
             "effort": "high",
             "summary": "auto"
