@@ -50,6 +50,7 @@ I've personally tested these Responses API samples using:
 - East US and Sweden Central [(see docs for a full list of supported regions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#region-availability)
 - Global Standard and Standard deployments
 - API version 2025-03-01-preview (2025-04-01-preview if using Reasoning Summaries)
+- API v1 Preview
 - OpenAI library 1.68.2 or above
 - Semantic Kernel 1.27 or above
 
@@ -57,6 +58,7 @@ I've personally tested these Responses API samples using:
 - web_search tool (Azure AI Foundry Agent Service recommended if web search is needed)
 
 # Further reading
+- [The Responses API in Azure AI Foundry is now generally available](https://techcommunity.microsoft.com/blog/azure-ai-services-blog/the-responses-api-in-azure-ai-foundry-is-now-generally-available/4446567)
 - [Introducing New Tools and Features in the Responses API in Azure AI Foundry](https://devblogs.microsoft.com/foundry/introducing-new-tools-and-features-in-the-responses-api-in-azure-ai-foundry/)
 - [Announcing the Responses API and Computer-Using Agent in Azure AI Foundry](https://azure.microsoft.com/blog/announcing-the-responses-api-and-computer-using-agent-in-azure-ai-foundry/)
 - [Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses)
