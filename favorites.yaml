@@ -1,0 +1,24 @@
+shortcuts:
+  - name: "Azure OpenAI Documentation"
+    description: "Official Azure OpenAI service documentation"
+    url: "https://learn.microsoft.com/azure/ai-services/openai/"
+    prompt: "Tell me about Azure OpenAI service capabilities"
+  
+  - name: "Responses API Guide"
+    description: "How to use the Responses API"
+    url: "https://learn.microsoft.com/azure/ai-services/openai/how-to/responses"
+    prompt: "Explain how to use the Responses API"
+  
+  - name: "Gradio Documentation"
+    description: "Gradio framework for building ML interfaces"
+    url: "https://gradio.app/docs"
+    prompt: "Show me how to build a chatbot with Gradio"
+  
+  - name: "OpenAI Models"
+    description: "Available OpenAI models and their capabilities"
+    url: "https://platform.openai.com/docs/models"
+    prompt: "What are the latest OpenAI models and their features?"
+  
+  - name: "Code Examples"
+    description: "Sample code for common AI tasks"
+    prompt: "Show me code examples for streaming responses"

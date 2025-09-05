@@ -3,6 +3,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import gradio as gr
 import base64
+import yaml
 
 # Load configuration settings from a .env file
 load_dotenv()
@@ -42,6 +43,18 @@ deployment, client = get_client(AIhost)
 
 # Global variable to store the response identifier from the last API call
 previous_response_id = None
+
+# Load shortcuts from YAML file
+def load_shortcuts():
+    """Load shortcuts from favorites.yaml file"""
+    try:
+        with open('favorites.yaml', 'r') as file:
+            return yaml.safe_load(file)
+    except FileNotFoundError:
+        return {"shortcuts": []}
+
+# Global shortcuts data
+shortcuts_data = load_shortcuts()
 
 def encode_image(image_path):
     """
@@ -216,11 +229,56 @@ def clear_chat():
 def clear_textbox():
     return ""
 
+def toggle_favorites():
+    """Toggle the favorites menu visibility"""
+    return gr.update(visible=True), gr.update(visible=False)
+
+def hide_favorites():
+    """Hide the favorites menu"""
+    return gr.update(visible=False), gr.update(visible=True)
+
+def use_shortcut(shortcut_name, history):
+    """Use a shortcut by finding it and returning its prompt"""
+    for shortcut in shortcuts_data.get("shortcuts", []):
+        if shortcut["name"] == shortcut_name:
+            prompt = shortcut.get("prompt", "")
+            if prompt:
+                return prompt, history
+    return "", history
+
+# Create individual shortcut functions
+def create_shortcut_function(shortcut_name):
+    """Create a function for a specific shortcut"""
+    def shortcut_fn(history):
+        return use_shortcut(shortcut_name, history)
+    return shortcut_fn
+
 # Build the Gradio Blocks interface for the chat demo
 with gr.Blocks(fill_height=True, fill_width=True) as demo:
     # Header Markdown text for the demo UI, centered
     if demo_title != "":
         gr.Markdown(f"<h2 style='text-align: center;'>{demo_title}</h2>")
+    
+    # Info bar (always visible)
+    with gr.Row(visible=True) as info_bar:
+        gr.Markdown("💡 **Info:** This is a Responses API demo with conversation history, image upload, and reasoning summary support.")
+        with gr.Row():
+            favorites_btn = gr.Button("⭐Favorites", size="sm", variant="secondary")
+    
+    # Favorites menu (initially hidden)
+    with gr.Column(visible=False) as favorites_menu:
+        gr.Markdown("### ⭐ Favorites")
+        with gr.Row():
+            close_favorites_btn = gr.Button("✖ Close", size="sm", variant="secondary")
+        
+        # Create buttons for each shortcut
+        shortcut_buttons = []
+        shortcut_functions = []
+        for shortcut in shortcuts_data.get("shortcuts", []):
+            btn = gr.Button(f"📎 {shortcut['name']}", size="sm")
+            shortcut_fn = create_shortcut_function(shortcut['name'])
+            shortcut_buttons.append(btn)
+            shortcut_functions.append(shortcut_fn)
     
     # Chatbot component to display messages stored in a list of role-content dictionaries
     chatbot = gr.Chatbot(type="messages", scale=1, render_markdown=True, sanitize_html=False)
@@ -258,6 +316,31 @@ with gr.Blocks(fill_height=True, fill_width=True) as demo:
     
     # Bind the clear button to reset the chat and clear the file upload
     clear_btn.click(fn=clear_chat, inputs=[], outputs=[chatbot, state, file_picker])
+    
+    # Favorites functionality
+    favorites_btn.click(
+        fn=toggle_favorites, 
+        inputs=[], 
+        outputs=[favorites_menu, favorites_btn]
+    )
+    
+    close_favorites_btn.click(
+        fn=hide_favorites, 
+        inputs=[], 
+        outputs=[favorites_menu, favorites_btn]
+    )
+    
+    # Bind shortcut buttons to use their respective prompts
+    for btn, shortcut_fn in zip(shortcut_buttons, shortcut_functions):
+        btn.click(
+            fn=shortcut_fn,
+            inputs=[state],
+            outputs=[msg, state]
+        ).then(
+            fn=hide_favorites,
+            inputs=[],
+            outputs=[favorites_menu, favorites_btn]
+        )
 
 # Launch the Gradio demo application
 demo.launch()
