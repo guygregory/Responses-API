@@ -1,0 +1,4 @@
+openai>=1.68.2
+python-dotenv
+requests
+gradio
