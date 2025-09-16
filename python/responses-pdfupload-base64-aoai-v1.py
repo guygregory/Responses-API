@@ -1,21 +1,16 @@
 import base64
-from openai import AzureOpenAI
-from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from openai import OpenAI
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-token_provider = get_bearer_token_provider(
-    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+client = OpenAI(
+    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+    base_url=os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
+    default_query={"api-version": "preview"}, 
 )
 
-client = AzureOpenAI(  
-  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"), 
-  azure_ad_token_provider=token_provider,
-  api_version="preview"
-)
-
-with open("employee_handbook.pdf", "rb") as f: # assumes PDF is in the same directory as the executing script
+with open("../assets/employee_handbook.pdf", "rb") as f: # assumes PDF is in the assets directory
     data = f.read()
 
 base64_string = base64.b64encode(data).decode("utf-8")

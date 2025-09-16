@@ -1,3 +1,4 @@
+import base64
 from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 import os
@@ -9,16 +10,15 @@ token_provider = get_bearer_token_provider(
 )
 
 client = AzureOpenAI(  
-  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
+  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"), 
   azure_ad_token_provider=token_provider,
   api_version="preview"
 )
 
-# Upload a file with a purpose of "batch"
-file = client.files.create(
-  file=open("employee_handbook.pdf", "rb"), # This assumes a .pdf file in the same directory as the executing script
-  purpose="assistants"
-)
+with open("../assets/employee_handbook.pdf", "rb") as f: # assumes PDF is in the assets directory
+    data = f.read()
+
+base64_string = base64.b64encode(data).decode("utf-8")
 
 response = client.responses.create(
     model=os.environ["AZURE_OPENAI_API_MODEL"],
@@ -28,7 +28,8 @@ response = client.responses.create(
             "content": [
                 {
                     "type": "input_file",
-                    "file_id":file.id
+                    "filename": "employee_handbook.pdf",
+                    "file_data": f"data:application/pdf;base64,{base64_string}",
                 },
                 {
                     "type": "input_text",

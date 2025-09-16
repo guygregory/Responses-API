@@ -5,7 +5,7 @@ import base64
 
 load_dotenv()
 
-IMAGE_PATH = "./book.jpeg"
+IMAGE_PATH = "../assets/book.jpeg"
 
 client = OpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
