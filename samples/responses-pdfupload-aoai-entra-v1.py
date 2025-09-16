@@ -1,17 +1,22 @@
-from openai import OpenAI
+from openai import AzureOpenAI
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 import os
 from dotenv import load_dotenv
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-    base_url=os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
-    default_query={"api-version": "preview"}, 
+token_provider = get_bearer_token_provider(
+    DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
 
-# Upload a file with a purpose of "assistants"
+client = AzureOpenAI(  
+  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
+  azure_ad_token_provider=token_provider,
+  api_version="preview"
+)
+
+# Upload a file with a purpose of "batch"
 file = client.files.create(
-  file=open("employee_handbook.pdf", "rb"), # This assumes a .pdf file in the same directory as the executing script
+  file=open("../assets/employee_handbook.pdf", "rb"), # This assumes a .pdf file in the assets directory
   purpose="assistants"
 )
 
