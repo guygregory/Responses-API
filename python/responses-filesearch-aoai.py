@@ -16,7 +16,7 @@ vector_store = client.vector_stores.create(
 )
 
 # Ready the files for upload to Azure OpenAI
-file_paths = ["employee_handbook.pdf"]
+file_paths = ["../assets/employee_handbook.pdf"]
 file_streams = [open(path, "rb") for path in file_paths]
 
 # Use the upload and poll SDK helper to upload the files, add them to the vector store,

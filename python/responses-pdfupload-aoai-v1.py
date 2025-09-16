@@ -1,4 +1,3 @@
-import base64
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
@@ -10,10 +9,11 @@ client = OpenAI(
     default_query={"api-version": "preview"}, 
 )
 
-with open("employee_handbook.pdf", "rb") as f: # assumes PDF is in the same directory as the executing script
-    data = f.read()
-
-base64_string = base64.b64encode(data).decode("utf-8")
+# Upload a file with a purpose of "assistants"
+file = client.files.create(
+  file=open("../assets/employee_handbook.pdf", "rb"), # This assumes a .pdf file in the assets directory
+  purpose="assistants"
+)
 
 response = client.responses.create(
     model=os.environ["AZURE_OPENAI_API_MODEL"],
@@ -23,8 +23,7 @@ response = client.responses.create(
             "content": [
                 {
                     "type": "input_file",
-                    "filename": "employee_handbook.pdf",
-                    "file_data": f"data:application/pdf;base64,{base64_string}",
+                    "file_id":file.id
                 },
                 {
                     "type": "input_text",
