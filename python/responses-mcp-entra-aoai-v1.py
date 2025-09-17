@@ -22,6 +22,7 @@ response = client.responses.create(
             "type": "mcp",
             "server_label": "MicrosoftLearn",
             "server_url": "https://learn.microsoft.com/api/mcp",
+            "allowed_tools": ["microsoft_docs_search", "microsoft_docs_search"],
             "require_approval": "never",
         },
     ],
@@ -29,3 +30,4 @@ response = client.responses.create(
 )
 
 print(response.output_text)
+
