@@ -44,15 +44,15 @@ As of 1.27, Semantic Kernel supports Responses API for both Azure OpenAI and Ope
 
 # Recommended settings
 
-I've personally tested these Responses API samples using:
+If you're coming to this for the first time, and want some suggestions for the most compatible/simplest way to try out the latest features, try the following:
 
-- gpt-4o 2024-08-06, gpt-4.1, o4-mini, and more [(see docs for a full list of supported models and versions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#model-support)
-- East US and Sweden Central [(see docs for a full list of supported regions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#region-availability)
-- Global Standard and Standard deployments
-- API version 2025-03-01-preview (2025-04-01-preview if using Reasoning Summaries)
-- API v1 Preview
-- OpenAI library 1.68.2 or above
-- Semantic Kernel 1.27 or above
+- Model: gpt-4.1 [(see docs for a full list of supported models and versions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#model-support)
+- Region: East US2 or Sweden Central [(see docs for a full list of supported regions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#region-availability)
+- Deployment: Global Standard
+- API version: v1 Preview
+- If using the "Legacy" API version: 2025-04-01-preview
+- OpenAI library 1.99.2 or above (ideally the latest stable release)
+- Semantic Kernel 1.36.1 or above (ideally the latest stable release)
 
 # Features currently unsupported on Responses API on Azure OpenAI
 - web_search tool (Azure AI Foundry Agent Service recommended if web search is needed)
