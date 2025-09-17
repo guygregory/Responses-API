@@ -1,4 +1,4 @@
-openai>=1.68.2
+openai>=1.99.2
 python-dotenv
 requests
 gradio
