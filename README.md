@@ -1,5 +1,5 @@
 # Responses API samples
-A selection of simple Responses API samples, which cover:
+Originally launched by OpenAI and now natively supported in Azure AI Foundry, the Responses API combines the simplicity of the Chat Completions API with the advanced tool-calling capabilities of the legacy Assistants API. It offers a streamlined way to build powerful agentic experiences by allowing developers to structure prompts, invoke tools, and manage outputs—all within a single API call. This repo includes a selection of minimal Responses API Python samples covering the most of the common features:
 
 | Sample description                                                                 | [Previous generation API (202x-xx-xx)](#why-are-there-two-sets-of-samples-which-api-version-should-i-use) | [v1 preview API](#why-are-there-two-sets-of-samples-which-api-version-should-i-use)                  |
 | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
