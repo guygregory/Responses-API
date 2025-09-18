@@ -22,4 +22,4 @@ response = client.responses.create(
     input="I need to solve the equation 3x + 11 = 14. Can you help me?",
 )
 
-print(response.output)
+print(response.output_text)

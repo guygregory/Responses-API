@@ -1,4 +1,4 @@
-from openai import AzureOpenAI
+from openai import OpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 import os
 from dotenv import load_dotenv
@@ -8,9 +8,9 @@ token_provider = get_bearer_token_provider(
     DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
 )
 
-client = AzureOpenAI(  
-  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
-  azure_ad_token_provider=token_provider,
+client = OpenAI(  
+  base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),  
+  api_key = token_provider
 )
 
 # Upload a file with a purpose of "batch"
