@@ -11,7 +11,6 @@ token_provider = get_bearer_token_provider(
 client = AzureOpenAI(  
   base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),  
   azure_ad_token_provider=token_provider,
-  api_version = "preview"
 )
 
 instructions = "You are a personal math tutor. When asked a math question, write and run code using the python tool to answer the question."
