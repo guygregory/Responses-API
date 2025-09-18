@@ -12,7 +12,6 @@ token_provider = get_bearer_token_provider(
 client = AzureOpenAI(  
   base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"), 
   azure_ad_token_provider=token_provider,
-  api_version="preview"
 )
 
 with open("../assets/employee_handbook.pdf", "rb") as f: # assumes PDF is in the assets directory

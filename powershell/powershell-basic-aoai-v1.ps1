@@ -8,7 +8,7 @@ Prereqs (set these env vars before running):
 
 param([string]$Prompt = "Tell me a joke.")
 
-$endpoint = $env:AZURE_OPENAI_V1_API_ENDPOINT.TrimEnd('/') + "/responses?api-version=preview"
+$endpoint = $env:AZURE_OPENAI_V1_API_ENDPOINT.TrimEnd('/') + "/responses"
 
 $body = @{ model = $env:AZURE_OPENAI_API_MODEL; input = $Prompt } | ConvertTo-Json
 

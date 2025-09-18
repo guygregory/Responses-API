@@ -11,7 +11,6 @@ token_provider = get_bearer_token_provider(
 client = AzureOpenAI(  
   base_url = os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
   azure_ad_token_provider=token_provider,
-  api_version="preview"
 )
 
 # Upload a file with a purpose of "batch"
