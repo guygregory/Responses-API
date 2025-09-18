@@ -25,7 +25,14 @@ This repo includes a selection of minimal Python samples covering the most of th
 | MCP remote server with Entra ID auth                                                            | n/a                                                                                                                                             | [responses-mcp-entra-aoai-v1.py](python/responses-mcp-entra-aoai-v1.py)                                                                         |
 | MCP remote server with Gradio UI                                                            | n/a                                                                                                                                             | [responses-mcp-mslearn-gradio-aoai-v1.py](python/responses-mcp-mslearn-gradio-aoai-v1.py)                                                                         |
 
-[![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](python/responses-conversation-stream-gradio.py)
+[//]: # (Codespaces section inserted below)
+### Quick Start with GitHub Codespaces
+
+The quickest way to get started is using GitHub Codespaces, a hosted environment that is automatically set up for you. Click this button to create a Codespace:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=Azure-Samples/azure-openai-responses-api-samples)
+
+Wait for the Codespace to initialize. Python 3.12, Python extension, and dependencies will be automatically installed.
 
 # Why are there two sets of samples? Which API version should I use?
 Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
@@ -55,6 +62,8 @@ If you're coming to this for the first time, and want some suggestions for the m
 - If using the "Legacy" API version: 2025-04-01-preview
 - OpenAI library 1.99.2 or above (ideally the latest stable release)
 - Semantic Kernel 1.36.1 or above (ideally the latest stable release)
+
+[![Reasoning Summary](https://github.com/user-attachments/assets/9e1ab1b8-8c3d-4ccf-911e-3c7711abe947)](python/responses-conversation-stream-gradio.py)
 
 # Features currently unsupported on Responses API on Azure OpenAI
 - web_search tool (Azure AI Foundry Agent Service recommended if web search is needed)

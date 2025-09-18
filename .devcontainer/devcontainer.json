@@ -1,0 +1,14 @@
+{
+  "name": "azure-openai-responses-api-samples",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "features": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt"
+}
