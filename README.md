@@ -1,4 +1,4 @@
-# Responses API samples for Azure OpenAI
+# Responses API on Azure OpenAI samples
 Originally launched by OpenAI and now natively supported in Azure AI Foundry, the Responses API combines the simplicity of the Chat Completions API with the advanced tool-calling capabilities of the legacy Assistants API. It offers a streamlined way to build powerful agentic experiences by allowing developers to structure prompts, invoke tools, and manage outputs - all within a single API call.
 
 This repo includes a selection of minimal Python samples covering the most of the common features of Responses API on Azure OpenAI:
