@@ -28,11 +28,11 @@ This repo includes a selection of minimal Python samples covering the most of th
 [//]: # (Codespaces section inserted below)
 ### Quick Start with GitHub Codespaces
 
-The quickest way to get started is using GitHub Codespaces, a hosted environment that is automatically set up for you. Click this button to create a Codespace:
+The quickest way to get started is using GitHub Codespaces, a hosted environment that is automatically set up for you. Click this button to create a Codespace (4-core machine recommended):
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=Azure-Samples/azure-openai-responses-api-samples)
 
-Wait for the Codespace to initialize. Python 3.12, Python extension, and dependencies will be automatically installed.
+Wait for the Codespace to initialize. Python 3.12, Python extension, and dependencies will be automatically installed. For an even more streamlined experience, add the environment variables into your [Codespace user secrets](https://github.com/settings/codespaces).
 
 # Why are there two sets of samples? Which API version should I use?
 Starting in May 2025, you can now opt in to our next generation of v1 Azure OpenAI APIs which add support for:
