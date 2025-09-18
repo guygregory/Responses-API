@@ -35,7 +35,7 @@ Starting in May 2025, you can now opt in to our next generation of v1 Azure Open
 Code samples have been provided for both the v1 API (now GA), and also the older API versions. The v1 API samples have a v1.py suffix to distinguish them.
 
 If you want the latest features, I would recommend using the v1 API which is now generally available. With the GA release, you no longer need to specify an api-version parameter.
-If you need to use the older API versions, you can use the legacy samples. At time of writing, the latest legacy API release is `2024-10-21`.
+If you need to use the older API versions, you can use the legacy samples. At time of writing, the latest GA API release is `2024-10-21`.
 
 [Azure OpenAI in Azure AI Foundry Models API lifecycle](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)
 
