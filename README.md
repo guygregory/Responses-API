@@ -64,6 +64,7 @@ If you're coming to this for the first time, and want some suggestions for the m
 - [Introducing New Tools and Features in the Responses API in Azure AI Foundry](https://devblogs.microsoft.com/foundry/introducing-new-tools-and-features-in-the-responses-api-in-azure-ai-foundry/)
 - [Announcing the Responses API and Computer-Using Agent in Azure AI Foundry](https://azure.microsoft.com/blog/announcing-the-responses-api-and-computer-using-agent-in-azure-ai-foundry/)
 - [Microsoft Learn Documentation](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses)
+- [Azure OpenAI in Azure AI Foundry Models v1 REST API reference](https://learn.microsoft.com/azure/ai-foundry/openai/latest#create-response)
 - [OpenAI documentation](https://platform.openai.com/docs/api-reference/responses/create)
 
 # Attribution
