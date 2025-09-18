@@ -19,7 +19,7 @@ response = client.responses.create(
                 { "type": "input_text", "text": "Describe this image" },
                 {
                     "type": "input_image",
-                    "image_url": "https://azure.microsoft.com/en-us/blog/wp-content/uploads/2024/07/bCLO20b_Sylvie_office_night_001-1024x683.jpg"
+                    "image_url": "https://upload.wikimedia.org/wikipedia/commons/9/94/Wanzijia.jpg"
                 }
             ]
         }
@@ -27,3 +27,4 @@ response = client.responses.create(
 )
 
 print(response.output_text)
+
