@@ -14,7 +14,6 @@ deployment = os.environ["AZURE_OPENAI_API_MODEL"]
 client = OpenAI(
     api_key=os.environ["AZURE_OPENAI_API_KEY"],
     base_url=os.environ["AZURE_OPENAI_API_ENDPOINT"].rstrip("/") + "/openai/v1/",
-    default_query={"api-version": "preview"},
 )
 
 # Global variable to store the response identifier from the last API call

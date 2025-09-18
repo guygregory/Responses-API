@@ -3,7 +3,7 @@ Originally launched by OpenAI and now natively supported in Azure AI Foundry, th
 
 This repo includes a selection of minimal Python samples covering the most of the common features of Responses API on Azure OpenAI:
 
-| Sample description                                                                 | [Previous generation API (202x-xx-xx)](#why-are-there-two-sets-of-samples-which-api-version-should-i-use) | [v1 preview API](#why-are-there-two-sets-of-samples-which-api-version-should-i-use)                  |
+| Sample description                                                                 | [Previous generation API (202x-xx-xx)](#why-are-there-two-sets-of-samples-which-api-version-should-i-use) | [v1 API (GA)](#why-are-there-two-sets-of-samples-which-api-version-should-i-use)                  |
 | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | Gradio-based chatbot with conversation history, image upload, Reasoning Summary | [responses-conversation-stream-gradio.py](python/responses-conversation-stream-gradio.py)                                                              | [responses-conversation-stream-gradio-v1.py](python/responses-conversation-stream-gradio-v1.py)                                                   |
 | Simple request/response with API key auth                                                        | [responses-basic-aoai.py](python/responses-basic-aoai.py)                                                                                              | [responses-basic-aoai-v1.py](python/responses-basic-aoai-v1.py)                                                                                   |
@@ -32,10 +32,10 @@ Starting in May 2025, you can now opt in to our next generation of v1 Azure Open
 - Ongoing access to the latest features with no need to update api-version each month.
 - OpenAI client support with minimal code changes to swap between OpenAI and Azure OpenAI when using key-based authentication.
 
-Code samples have been provided for both the v1 API Preview, and also the older API versions. The v1 API Preview samples have a v1.py suffix to distinguish them.
+Code samples have been provided for both the v1 API (now GA), and also the older API versions. The v1 API samples have a v1.py suffix to distinguish them.
 
-If you want the latest features, I would recommend using the v1 API Preview, with the `api-version` set to `preview`.
-If you need a stable, GA version, and don't need the latest features, then you can use the older API. At time of writing, the latest GA API release is `2024-10-21`.
+If you want the latest features, I would recommend using the v1 API which is now generally available. With the GA release, you no longer need to specify an api-version parameter.
+If you need to use the older API versions, you can use the legacy samples. At time of writing, the latest GA API release is `2024-10-21`.
 
 [Azure OpenAI in Azure AI Foundry Models API lifecycle](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-lifecycle?tabs=key#api-evolution)
 
@@ -51,7 +51,7 @@ If you're coming to this for the first time, and want some suggestions for the m
 - Model: gpt-4.1 [(see docs for a full list of supported models and versions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#model-support)
 - Region: East US2 or Sweden Central [(see docs for a full list of supported regions)](https://learn.microsoft.com/azure/ai-services/openai/how-to/responses?tabs=python-secure#region-availability)
 - Deployment: Global Standard
-- API version: v1 Preview
+- API version: v1 (GA)
 - If using the "Legacy" API version: 2025-04-01-preview
 - OpenAI library 1.99.2 or above (ideally the latest stable release)
 - Semantic Kernel 1.36.1 or above (ideally the latest stable release)

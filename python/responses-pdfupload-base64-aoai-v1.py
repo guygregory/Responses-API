@@ -7,7 +7,7 @@ load_dotenv()
 client = OpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     base_url=os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
-    default_query={"api-version": "preview"}, 
+
 )
 
 with open("../assets/employee_handbook.pdf", "rb") as f: # assumes PDF is in the assets directory
