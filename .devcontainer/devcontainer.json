@@ -1,6 +1,9 @@
 {
   "name": "azure-openai-responses-api-samples",
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "hostRequirements": {
+    "cpus": 4
+  }
   "features": {},
   "customizations": {
     "vscode": {
