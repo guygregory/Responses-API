@@ -1,60 +1,79 @@
 import os
+import json
+import requests
 from openai import OpenAI
 from dotenv import load_dotenv
-import requests
-import json
-
 load_dotenv()
 
-def get_weather(latitude, longitude):
-    response = requests.get(f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m")
-    data = response.json()
-    return data['current']['temperature_2m']
+def get_weather(latitude: float, longitude: float) -> str:
+    """Return a short natural language weather summary for given coordinates."""
+    r = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params={
+            "latitude": latitude,
+            "longitude": longitude,
+            "current": "temperature_2m,wind_speed_10m",
+        },
+        timeout=10,
+    )
+    c = r.json().get("current", {})
+    temp = c.get("temperature_2m")
+    wind = c.get("wind_speed_10m")
+    return f"Current temperature is {temp}°C with wind {wind} m/s." if temp is not None else "Weather data unavailable."
 
 client = OpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     base_url=os.getenv("AZURE_OPENAI_V1_API_ENDPOINT"),
 )
 
-tools = [{
-    "type": "function",
-    "name": "get_weather",
-    "description": "Get current temperature for provided coordinates in celsius.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "latitude": {"type": "number"},
-            "longitude": {"type": "number"}
+tools = [
+    {
+        "type": "function",
+        "name": "get_weather",
+        "description": "Get current temperature (C) & wind for coordinates.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "latitude": {"type": "number"},
+                "longitude": {"type": "number"},
+            },
+            "required": ["latitude", "longitude"],
         },
-        "required": ["latitude", "longitude"],
-        "additionalProperties": False
-    },
-    "strict": True
-}]
+    }
+]
 
-input_messages = [{"role": "user", "content": "What's the weather like in London today?"}]
+# Running conversation state
+conversation = [
+    {"role": "user", "content": "What's the weather in London right now?"}
+]
 
-response = client.responses.create(
-    model=os.environ["AZURE_OPENAI_API_MODEL"],
-    input=input_messages,
+# First model call – model decides whether to call the tool
+resp1 = client.responses.create(
+    model=os.getenv("AZURE_OPENAI_API_MODEL"),
     tools=tools,
+    input=conversation,
 )
 
-tool_call = response.output[0]
-args = json.loads(tool_call.arguments)
+# Add model output messages (may include a function_call) to the conversation
+conversation += resp1.output
 
-result = get_weather(args["latitude"], args["longitude"])
+# Execute any function calls and append outputs
+for item in resp1.output:
+    if item.type == "function_call" and item.name == "get_weather":
+        args = json.loads(item.arguments)
+        weather_text = get_weather(args["latitude"], args["longitude"])
+        conversation.append({
+            "type": "function_call_output",
+            "call_id": item.call_id,
+            "output": json.dumps({"weather": weather_text}),
+        })
 
-input_messages.append(tool_call)  # append model's function call message
-input_messages.append({                               # append result message
-    "type": "function_call_output",
-    "call_id": tool_call.call_id,
-    "output": str(result)
-})
-
-response_2 = client.responses.create(
-    model=os.environ["AZURE_OPENAI_API_MODEL"],
-    input=input_messages,
+# Second model call – model incorporates tool output and answers user
+final_resp = client.responses.create(
+    model=os.getenv("AZURE_OPENAI_API_MODEL"),
     tools=tools,
+    instructions="Answer using the weather tool output only; be concise.",
+    input=conversation,
 )
-print(response_2.output_text)
+
+print(final_resp.output_text)
