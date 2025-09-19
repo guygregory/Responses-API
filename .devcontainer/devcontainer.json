@@ -3,8 +3,12 @@
   "image": "mcr.microsoft.com/devcontainers/python:3.12",
   "hostRequirements": {
     "cpus": 4
-  }
-  "features": {},
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {
+      "version": "latest"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
