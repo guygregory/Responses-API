@@ -12,7 +12,6 @@ client = OpenAI(
 response = client.responses.create(
     model=os.environ["AZURE_OPENAI_API_MODEL"],
     input="Tell me a joke."
-
 )
 
 print(response.output_text)
